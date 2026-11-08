@@ -59,20 +59,20 @@ jobs:
         ./clean_sources.sh
         ./build_toolchain.sh
 
+    - name: Download and integrate zapret2 binary
+      run: |
+       ZAPRET2_URL="https://github.com/bol-van/zapret2/releases/download/v1.0.7/zapret2-v1.0.7.tar.gz"
+       wget -qO zapret2.tar.gz "$ZAPRET2_URL"
+       mkdir -p zapret2-tmp
+       tar -xzf zapret2.tar.gz -C zapret2-tmp --strip-components=1
 
-        - name: Download and integrate zapret2 binary
-  run: |
-    ZAPRET2_URL="https://github.com/bol-van/zapret2/releases/download/v1.0.7/zapret2-v1.0.7.tar.gz"
-    wget -qO zapret2.tar.gz "$ZAPRET2_URL"
-    mkdir -p zapret2-tmp
-    tar -xzf zapret2.tar.gz -C zapret2-tmp --strip-components=1
+       # Скопировать в каталог nfqws2, сохранив исходное имя
+       mkdir -p padavan-ng/trunk/user/nfqws2/bin
+       find zapret2-tmp -type f -name "nfqws2" -path "*mipsel*" -exec cp {} padavan-ng/trunk/user/nfqws2/bin/ \;
 
-    # Скопировать в каталог nfqws2, сохранив исходное имя
-    mkdir -p padavan-ng/trunk/user/nfqws2/bin
-    find zapret2-tmp -type f -name "nfqws2" -path "*mipsel*" -exec cp {} padavan-ng/trunk/user/nfqws2/bin/nfqws2 \;
-
-    # Проверка
-    ls -la padavan-ng/trunk/user/nfqws2/bin/
+       # Проверка
+       ls -la padavan-ng/trunk/user/nfqws2/bin/
+    
 
     - name: Build firmware
       run: |
